@@ -1,0 +1,13 @@
+#if($theme=='black')
+    #set($layout = "layout/theme_black.vm")
+#else
+    #set($layout = "layout/index.vm")
+#end
+#define($vm_content)
+index run!
+
+##    #springMessageText('web.navigation.index','123')
+
+<a href="#springUrl('/adminlogin')">#springMessage('web.message.login')</a>
+    #springMessage('web.navigation.index')
+#end

@@ -1,0 +1,72 @@
+#set($layout = "layout/admin/admin.vm")
+#define($admin_breadcrumb)
+<li><a href="#">安全设置</a></li>
+<li><a href="#">权限管理</a></li>
+<li><a href="#">列表</a></li>
+#end
+#define($navActive)admin-auth#end
+#define($page_id)auth#end
+#define($admin_content)
+<style>
+    #content {
+        margin-left: 10em;
+    }
+</style>
+<a href="#springUrl('/admin/security/auth/add')?pid=$id"
+   class="btn">添加</a>
+<div class="row">
+    <div class="col-sm-3">
+        <p>
+            <a href="javascript: d.openAll();">打开全部</a>
+            | <a href="javascript: d.closeAll();">关闭</a>
+        </p>
+        <script type="text/javascript">
+            d = new dTree('d');
+                #foreach( $auth in $auths )
+                d.add($auth.id,$auth.pid, '$auth.displayName', 'list?pid=$auth.id');
+                #end
+            document.write(d);
+            d.closeAll();
+            d.openTo($id, true);
+        </script>
+    </div>
+    <div class="col-sm-9">
+        <div class="l-box">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>权限名称</th>
+                    <th>权限标识</th>
+                    <th>权限URL</th>
+                    <th class="open-admin-operate">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach( $auth in $list )
+                    <tr #if($velocityCount%2==1)class="pure-table-odd"#end>
+                        <td class="open-admin-operate">$auth.displayName</td>
+                        <td class="open-admin-operate">$auth.name</td>
+                        <td class="open-admin-operate">$auth.url</td>
+                        <td class="open-admin-operate">
+                            <a class="btn btn-info btn-xs"
+                               href="#springUrl('')/admin/security/auth/$auth.id/edit">修改</a>
+                            <a class="btn btn-danger btn-xs"
+                               href="javascript:if(confirm('确实要删除权限{$auth.name}吗?'))location='#springUrl('')/admin/security/auth/$auth.id/delete'">删除</a>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+#end
+#define($admin_js)
+<script>
+    $(document).ready(function () {
+        $("#security-li").addClass("active open");
+        $("#security-li ul").show();
+        $("#security-li-auth").addClass("active");
+    });
+</script>
+#end

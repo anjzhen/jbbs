@@ -1,0 +1,52 @@
+#set($layout = "layout/admin/admin.vm")
+#define($navActive)admin-role#end
+#define($page_id)role#end
+#define($admin_content)
+<style>
+    #content{
+        margin-left:10em;
+    }
+</style>
+<div class="open-breadcrumb">
+    <strong>
+        <a href="#">安全设置</a>
+    </strong>
+    <span> &nbsp;&gt;&nbsp;</span>
+    <strong>
+        <a href="#">角色管理</a>
+    </strong>
+    <span> &nbsp;&gt;&nbsp;<a href="#">列表</a>
+    </span>
+    <h3>
+        <a href="#springUrl('/admin/security/role/add')" class="btn btn-success">添加</a>
+    </h3>
+</div>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>角色名称</th>
+        <th class="open-admin-operate">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+        #foreach( $role in $list )
+        <tr #if($velocityCount%2==1)class="pure-table-odd"#end>
+            <td class="open-admin-operate">$role.name</td>
+            <td class="open-admin-operate">
+                <a class="btn btn-info btn-xs"  href="#springUrl('')/admin/security/role/$role.id/edit">修改</a>
+                <a class="btn btn-danger btn-xs"  href="javascript:if(confirm('确实要删除吗?'))location='#springUrl('')/admin/security/role/$role.id/delete'">删除</a>
+            </td>
+        </tr>
+        #end
+    </tbody>
+</table>
+#end
+#define($admin_js)
+<script>
+    $(document).ready(function () {
+        $("#security-li").addClass("active open");
+        $("#security-li ul").show();
+        $("#security-li-role").addClass("active");
+    });
+</script>
+#end

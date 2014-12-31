@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.ymee.jbbs.module.record.mapper.AdminRecordMapper" >
+  <resultMap id="BaseResultMap" type="cc.ymee.jbbs.module.record.pojo.AdminRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="record_content" property="recordContent" jdbcType="VARCHAR" />
+    <result column="in_time" property="inTime" jdbcType="TIMESTAMP" />
+    <result column="record_key" property="recordKey" jdbcType="VARCHAR" />
+    <result column="admin_id" property="adminId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cc.ymee.jbbs.module.record.pojo.AdminRecordWithBLOBs" extends="BaseResultMap" >
+    <result column="source_data" property="sourceData" jdbcType="LONGVARCHAR" />
+    <result column="end_data" property="endData" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, record_content, in_time, record_key, admin_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    source_data, end_data
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from admin_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from admin_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart >= 0" >
+      limit ${limitStart} , ${limitEnd}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from admin_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from admin_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordExample" >
+    delete from admin_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordWithBLOBs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into admin_record (record_content, in_time, record_key, 
+      admin_id, source_data, end_data
+      )
+    values (#{recordContent,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP}, #{recordKey,jdbcType=VARCHAR}, 
+      #{adminId,jdbcType=INTEGER}, #{sourceData,jdbcType=LONGVARCHAR}, #{endData,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordWithBLOBs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into admin_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordContent != null" >
+        record_content,
+      </if>
+      <if test="inTime != null" >
+        in_time,
+      </if>
+      <if test="recordKey != null" >
+        record_key,
+      </if>
+      <if test="adminId != null" >
+        admin_id,
+      </if>
+      <if test="sourceData != null" >
+        source_data,
+      </if>
+      <if test="endData != null" >
+        end_data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordContent != null" >
+        #{recordContent,jdbcType=VARCHAR},
+      </if>
+      <if test="inTime != null" >
+        #{inTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordKey != null" >
+        #{recordKey,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null" >
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="sourceData != null" >
+        #{sourceData,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="endData != null" >
+        #{endData,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordExample" resultType="java.lang.Integer" >
+    select count(*) from admin_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update admin_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.recordContent != null" >
+        record_content = #{record.recordContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inTime != null" >
+        in_time = #{record.inTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recordKey != null" >
+        record_key = #{record.recordKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adminId != null" >
+        admin_id = #{record.adminId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sourceData != null" >
+        source_data = #{record.sourceData,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.endData != null" >
+        end_data = #{record.endData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update admin_record
+    set id = #{record.id,jdbcType=INTEGER},
+      record_content = #{record.recordContent,jdbcType=VARCHAR},
+      in_time = #{record.inTime,jdbcType=TIMESTAMP},
+      record_key = #{record.recordKey,jdbcType=VARCHAR},
+      admin_id = #{record.adminId,jdbcType=INTEGER},
+      source_data = #{record.sourceData,jdbcType=LONGVARCHAR},
+      end_data = #{record.endData,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update admin_record
+    set id = #{record.id,jdbcType=INTEGER},
+      record_content = #{record.recordContent,jdbcType=VARCHAR},
+      in_time = #{record.inTime,jdbcType=TIMESTAMP},
+      record_key = #{record.recordKey,jdbcType=VARCHAR},
+      admin_id = #{record.adminId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordWithBLOBs" >
+    update admin_record
+    <set >
+      <if test="recordContent != null" >
+        record_content = #{recordContent,jdbcType=VARCHAR},
+      </if>
+      <if test="inTime != null" >
+        in_time = #{inTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordKey != null" >
+        record_key = #{recordKey,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null" >
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="sourceData != null" >
+        source_data = #{sourceData,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="endData != null" >
+        end_data = #{endData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordWithBLOBs" >
+    update admin_record
+    set record_content = #{recordContent,jdbcType=VARCHAR},
+      in_time = #{inTime,jdbcType=TIMESTAMP},
+      record_key = #{recordKey,jdbcType=VARCHAR},
+      admin_id = #{adminId,jdbcType=INTEGER},
+      source_data = #{sourceData,jdbcType=LONGVARCHAR},
+      end_data = #{endData,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecord" >
+    update admin_record
+    set record_content = #{recordContent,jdbcType=VARCHAR},
+      in_time = #{inTime,jdbcType=TIMESTAMP},
+      record_key = #{recordKey,jdbcType=VARCHAR},
+      admin_id = #{adminId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="ResultMapWithBLOBs" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordExample" id="selectByExampleWithBLOBsWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from admin_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select resultMap="BaseResultMap" parameterType="cc.ymee.jbbs.module.record.pojo.AdminRecordExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from admin_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

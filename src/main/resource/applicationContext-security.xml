@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+    <!-- 页面不过滤 -->
+    <http pattern="/adminlogin*" security="none"/>
+    <http pattern="/config/**" security="none"/>
+    <http auto-config="true" use-expressions="true">
+        <!-- 登录配置 -->
+        <form-login login-page="/adminlogin" default-target-url="/admin/dashboard"
+                    username-parameter="j_username" password-parameter="j_password" authentication-failure-url="/adminlogin?error=true "
+                    login-processing-url="/admin/security_check" />
+        <!-- 退出配置 -->
+        <!-- logout-url:退出请求地址。系统默认:j_spring_security_logout logout-success-url:退出成功，跳转地址连接。
+            delete-cookies:删除 cookies 内容。 success-handler-ref:退出回调接口。类需实现接口: LogoutSuccessHandler
+            invalidate-session:如果设置为 true，用户的 Session 将会在退出时被失效。 -->
+        <logout logout-url="/admin/logout" logout-success-url="/adminlogin" invalidate-session="true"/>
+        <!-- 对登录页面不进行拦截， 后面的*主要是请求页面可能会带有一些参数 -->
+
+        <custom-filter ref="exceptionTranslationFilter" before="EXCEPTION_TRANSLATION_FILTER"/>
+        <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="myFilter"/>
+        <remember-me remember-me-parameter="_spring_security_remember_me"/>
+    </http>
+
+    <!-- 一个自定义的filter，必须包含authenticationManager,accessDecisionManager,securityMetadataSource三个属性，
+        我们的所有控制将在这三个类中实现，解释详见具体配置 -->
+    <beans:bean id="myFilter"
+                class="cc.ymee.jbbs.module.security.core.MyFilterSecurityInterceptor">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+        <beans:property name="accessDecisionManager" ref="myAccessDecisionManagerBean"/>
+        <beans:property name="securityMetadataSource" ref="securityMetadataSource"/>
+    </beans:bean>
+
+    <!-- 认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可 -->
+    <authentication-manager alias="authenticationManager" erase-credentials="false">
+        <authentication-provider user-service-ref="myUserDetailService">
+            <password-encoder ref="md5PasswdEncoder"><!-- 用户加密解密类 -->
+                <salt-source user-property="username"/>
+            </password-encoder>
+        </authentication-provider>
+    </authentication-manager>
+
+
+    <beans:bean id="myUserDetailService"
+                class="cc.ymee.jbbs.module.security.core.MyUserDetailService"/>
+
+    <!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+    <beans:bean id="myAccessDecisionManagerBean"
+                class="cc.ymee.jbbs.module.security.core.MyAccessDecisionManager"/>
+
+    <!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
+    <beans:bean id="securityMetadataSource"
+                class="cc.ymee.jbbs.module.security.core.MyInvocationSecurityMetadataSource"/>
+
+    <!-- 用户详情管理类使用的加密方式 -->
+    <beans:bean id="md5PasswdEncoder"
+                class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
+    <!-- PasswordEncoder 密码接口 -->
+
+    <beans:bean id="authenticationEntryPoint"
+                class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <beans:property name="loginFormUrl" value="/adminlogin"/>
+    </beans:bean>
+
+    <beans:bean id="accessDeniedHandler"
+                class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+        <beans:property name="errorPage" value="/accessDenied"/>
+    </beans:bean>
+    <beans:bean id="exceptionTranslationFilter"
+          class="org.springframework.security.web.access.ExceptionTranslationFilter">
+        <beans:property name="authenticationEntryPoint" ref="authenticationEntryPoint"/>
+        <beans:property name="accessDeniedHandler" ref="accessDeniedHandler"/>
+    </beans:bean>
+</beans:beans>

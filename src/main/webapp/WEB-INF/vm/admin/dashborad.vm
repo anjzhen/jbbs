@@ -1,0 +1,99 @@
+#set($layout = "layout/admin/admin.vm")
+#define($navActive)dashboard#end
+#define($admin_breadcrumb)
+<li class="active">Dashboard</li>
+#end
+#define($admin_content)
+    <style>
+        .infobox-container{
+            font-size: 12px;
+        }
+    </style>
+<div class="hero-unit">
+    <div class="col-xs-12">
+        <div class="alert alert-block alert-success">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+
+            <i class="ace-icon fa fa-check green"></i>
+            欢迎
+            <strong class="green">
+               #company() #projectName()
+                <small>(v1.0 bata)</small>
+            </strong>@mailto: #devMail()
+        </div>
+    </div>
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-sm-7 infobox-container">
+                1111
+        </div>
+
+        <div class="vspace-12-sm"></div>
+
+        <div class="col-sm-5">
+            <div class="widget-box">
+                <div class="widget-header widget-header-flat">
+                    <h4 class="widget-title smaller">
+                        <i class="ace-icon fa fa-quote-left smaller-80"></i>
+                        系统说明 &amp; 》
+                    </h4>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <blockquote class="pull-right">
+                                    <p>请妥善保管您的帐号信息及密码</p>
+
+                                    <small>
+                                        <a href="#baseUrl('/admin/setting/pwd/change')">修改密码</a>
+                                        <cite title="Source Title">首次登录请修改密码</cite>
+                                    </small>
+                                </blockquote>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <blockquote>
+                                    <p class="lighter line-height-125">
+                                        系统将记录您的登录及操作日志
+                                    </p>
+
+                                    <small>
+                                        日志由系统生成
+                                        <cite title="Source Title">.</cite>
+                                    </small>
+                                </blockquote>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <address>
+                            <strong>#company(), @2013.</strong>
+
+                            <br>
+                            ---
+                            <br>
+
+                            <br>
+                            <abbr title="Phone">P:</abbr>
+                            #website()
+                        </address>
+
+                        <address>
+                            <strong>#company()#projectName()管理平台</strong>
+
+                            <br>
+                            <a href="#website()">#website()</a>
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.col -->
+    </div>
+</div>
+#end

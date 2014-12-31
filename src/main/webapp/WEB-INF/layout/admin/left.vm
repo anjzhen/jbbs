@@ -1,0 +1,62 @@
+<ul class="nav nav-list">
+    <li class="">
+        <a href="#springUrl('/admin/dashboard')">
+            <i class="menu-icon fa fa-tachometer"></i>
+            <span class="menu-text"> 主  页 </span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+    #if($sec.allGranted("securitymanager"))
+        <li class="" id="security-li">
+            <a href="" class="dropdown-toggle">
+                <i class="menu-icon fa fa-cog"></i>
+                <span class="menu-text"> 安全设置 </span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <ul class="submenu" style="display: none;">
+                <li id="security-li-auth">
+                    <a href="#springUrl('/')admin/security/auth/list">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        权限设置
+                    </a>
+                    <b class="arrow"></b>
+
+                </li>
+                <li id="security-li-role">
+                    <a href="#springUrl('/')admin/security/role/list">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        角色管理
+                    </a><b class="arrow"></b>
+                </li>
+                <li id="security-li-user">
+                    <a href="#springUrl('/')admin/security/adminuser/list">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        用户管理
+                    </a><b class="arrow"></b>
+                </li>
+
+                <li id="security-li-sysstat">
+                    <a href="#springUrl('/')admin/systemstat/index.html" target="_blank">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        系统信息
+                    </a><b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+    #end
+
+    #if($sec.allGranted("setting"))
+        <li id="nav_pwd">
+            <a href="#springUrl('')/admin/setting/pwd/change">
+                <i class="menu-icon fa fa-cog"></i>
+                <span class="menu-text">修改密码</span>
+            </a>
+        </li>
+    #end
+    <li>
+        <a href="/admin/logout">
+            <i class="menu-icon fa fa-power-off"></i>
+            <span class="menu-text">退出</span>
+        </a>
+    </li>
+</ul>

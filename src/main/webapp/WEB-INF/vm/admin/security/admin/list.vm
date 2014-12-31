@@ -1,0 +1,42 @@
+#set($layout = "layout/admin/admin.vm")
+
+#define($admin_breadcrumb)
+<li>用户列表</li>
+#end
+#define($admin_content)
+<div class="open-breadcrumb">
+    <div class="open-right">
+        <a href="#springUrl('/admin/security/adminuser/add')" class="btn btn-primary">添加</a>
+    </div>
+</div>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>用户名</th>
+        <th class="open-admin-operate">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+        #foreach( $admin in $list )
+        <tr #if($velocityCount%2==1)class="pure-table-odd"#end>
+            <td class="open-admin-operate">$admin.username</td>
+            <td class="open-admin-operate">
+                <a class="btn btn-info btn-xs" href="#springUrl('')/admin/security/adminuser/$admin.id/edit">修改</a>
+                <a class="btn btn-danger btn-xs"
+                   href="javascript:if(confirm('确实要删除用户{$admin.username}吗?'))location='#springUrl('')/admin/security/adminuser/$admin.id/delete'">删除</a>
+            </td>
+        </tr>
+        #end
+    </tbody>
+</table>
+#end
+
+#define($admin_js)
+<script>
+    $(document).ready(function () {
+        $("#security-li").addClass("active open");
+        $("#security-li ul").show();
+        $("#security-li-user").addClass("active");
+    });
+</script>
+#end
